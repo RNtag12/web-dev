@@ -64,9 +64,8 @@ Full Stack Website (MEAN stack)
 * [Node.js](https://nodejs.org/) - JavaScript runtime
 
 ## Contributors
-
+* **Rodrigue Ntagashobotse** 
 * **Claudia Choi**
-* **Rodrigue Ntagashobotse**
 * **Jake Marsden**
 * **Tianyue Shen**
 
