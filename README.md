@@ -6,17 +6,17 @@ This project is a full stack web application built using the MEAN stack (MongoDB
 
 ### Security Features
 #### Password Hashing:
-User passwords are securely hashed using bcrypt before being stored in the database, protecting user credentials even if the database is compromised.
+- User passwords are securely hashed using bcrypt before being stored in the database, protecting user credentials even if the database is compromised.
 #### Input Validation:
-User and product data are validated at the schema level to ensure only properly formatted and required information is accepted.
+- User and product data are validated at the schema level to ensure only properly formatted and required information is accepted.
 #### Unique Email Enforcement:
-The user registration process enforces unique email addresses, preventing duplicate accounts and reducing the risk of account enumeration.
+- The user registration process enforces unique email addresses, preventing duplicate accounts and reducing the risk of account enumeration.
 #### Authentication Middleware:
-API routes for sensitive operations are protected by authentication middleware (if implemented), ensuring only authorized users can access or modify data.
+- API routes for sensitive operations are protected by authentication middleware (if implemented), ensuring only authorized users can access or modify data.
 #### CORS Protection:
-Cross-Origin Resource Sharing (CORS) is enabled and configured to control which domains can interact with the backend API, mitigating certain cross-site attacks.
+- Cross-Origin Resource Sharing (CORS) is enabled and configured to control which domains can interact with the backend API, mitigating certain cross-site attacks.
 #### Error Handling:
-Centralized error handling prevents sensitive information from being exposed in API responses.
+- Centralized error handling prevents sensitive information from being exposed in API responses.
 
 
 
