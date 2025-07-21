@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
@@ -10,7 +10,8 @@ import { CartService, CartItem } from '../../services/cart.service';
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule], 
+  imports: [CommonModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   products: any[] = [];
@@ -25,7 +26,7 @@ export class HomeComponent {
   quantityError: string | null = null;
 
   constructor(
-    private productService: ProductService, 
+    private productService: ProductService,
     private router: Router,
     private cartService: CartService
   ) {}
@@ -40,8 +41,6 @@ export class HomeComponent {
 
     this.productService.getProducts().subscribe({
       next: (data) => {
-        console.log('Products fetched:', data); // Debugging
-
         // Sort by stock (ascending) and take the first 5, discard out of stock.
         this.lowStockProducts = data
           .filter(product => product.stock > 0)
@@ -121,5 +120,13 @@ export class HomeComponent {
 
     this.cartService.addToCart(cartItem);
     this.closeQuantityDialog();
+  }
+
+  // Add trackBy functions for ngFor
+  trackByProductId(index: number, product: any): any {
+    return product.id || product._id || index;
+  }
+  trackByReviewIndex(index: number, review: any): number {
+    return index;
   }
 }

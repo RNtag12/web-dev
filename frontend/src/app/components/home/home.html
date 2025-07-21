@@ -17,12 +17,13 @@
     <h1>Sold Out Soon</h1>
     <table class="sos-table" *ngIf="!loading && !error">
       <tbody>
-        <tr *ngFor="let product of lowStockProducts">
+        <tr *ngFor="let product of lowStockProducts; trackBy: trackByProductId">
           <td>
             <img 
               [src]="'/assets/' + product.brand + '.jpeg'"  
               alt="{{ product.brand }}" 
               width="100"
+              loading="lazy"
             >
           </td>
           <td>
@@ -41,12 +42,13 @@
     <h1>Best Sellers</h1>
     <table class="best-table" *ngIf="!loading && !error">
       <tbody>
-        <tr *ngFor="let product of bestRatedProducts">
+        <tr *ngFor="let product of bestRatedProducts; trackBy: trackByProductId">
           <td>
             <img 
               [src]="'/assets/' + product.brand + '.jpeg'"  
               alt="{{ product.brand }}" 
               width="100"
+              loading="lazy"
             >
           </td>
           <td>
@@ -55,7 +57,7 @@
             <p>Price: ${{ product.price }}</p>
             <p>Reviews:</p>
             <ul>
-              <li *ngFor="let review of product.reviews">
+              <li *ngFor="let review of product.reviews; trackBy: trackByReviewIndex">
                 <p><strong>Rating:</strong> {{ review.rating }}</p>
                 <p><strong>Comment:</strong> {{ review.comment }}</p>
               </li>
