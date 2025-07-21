@@ -1,0 +1,93 @@
+<div class="checkout-container">
+  <button class="btn btn-secondary back-btn" (click)="goBack()">Back</button>
+  <div class="header">
+    <h2>Checkout</h2>
+  </div>
+
+  <div class="cart-items" *ngIf="cartItems.length > 0">
+    <h3>Your Cart</h3>
+    <div class="cart-item" *ngFor="let item of cartItems">
+      <div class="item-details">
+        <h4>{{ item.title }}</h4>
+        <p class="price">${{ item.price }}</p>
+      </div>
+      <div class="item-actions">
+        <div class="quantity-control">
+          <button class="btn btn-secondary" (click)="updateQuantity(item.productId, item.quantity - 1)">-</button>
+          <input
+            type="number"
+            [value]="item.quantity"
+            min="0"
+            (change)="onQuantityChange($event, item.productId)"
+          >
+          <button class="btn btn-secondary" (click)="updateQuantity(item.productId, item.quantity + 1)">+</button>
+        </div>
+        <button class="btn btn-danger" (click)="removeItem(item.productId)">Remove</button>
+      </div>
+    </div>
+    <div class="total">
+      <h3>Total: ${{ totalPrice }}</h3>
+    </div>
+  </div>
+
+  <div class="empty-cart" *ngIf="cartItems.length === 0">
+    <p>Your cart is empty</p>
+    <div class="empty-cart-actions">
+      <button class="btn btn-primary" (click)="goBack()">Continue Shopping</button>
+    </div>
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" *ngIf="cartItems.length > 0">
+    <div class="form-group">
+      <label for="fullName">Full Name</label>
+      <input
+        type="text"
+        id="fullName"
+        formControlName="fullName"
+        class="form-control"
+        [class.is-invalid]="fullName?.invalid && fullNameTouched"
+      >
+      <div class="invalid-feedback" *ngIf="fullName?.invalid && fullNameTouched">
+        Please enter your full name
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input
+        type="text"
+        id="address"
+        formControlName="address"
+        class="form-control"
+        [class.is-invalid]="address?.invalid && addressTouched"
+      >
+      <div class="invalid-feedback" *ngIf="address?.invalid && addressTouched">
+        Please enter your address
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="creditCard">Credit Card Number</label>
+      <input
+        type="text"
+        id="creditCard"
+        formControlName="creditCard"
+        class="form-control"
+        [class.is-invalid]="creditCard?.invalid && creditCardTouched"
+      >
+      <div class="invalid-feedback" *ngIf="creditCard?.invalid && creditCardTouched">
+        Please enter a valid 16-digit credit card number
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="error">{{ error }}</div>
+
+    <button
+      type="submit"
+      class="btn btn-success"
+      [disabled]="checkoutForm.invalid || loading"
+    >
+      {{ loading ? 'Processing...' : 'Confirm Payment' }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,62 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Login</h2>
+    
+    <div *ngIf="hasPendingCart" class="cart-notice">
+      <p>Please login to add items to your cart</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{'is-invalid': email?.invalid && email?.touched}"
+        >
+        <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+          <div *ngIf="email?.errors?.['required']">Email is required</div>
+          <div *ngIf="email?.errors?.['email']">Please enter a valid email</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{'is-invalid': password?.invalid && password?.touched}"
+        >
+        <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+          <div *ngIf="password?.errors?.['required']">Password is required</div>
+          <div *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</div>
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="loginForm.invalid || loading"
+      >
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <div class="links">
+      <div class="signup-link">
+        Don't have an account? <a routerLink="/signup">Sign up</a>
+      </div>
+      <div class="reset-link">
+        <a routerLink="/reset-password">Forgot your password?</a>
+      </div>
+    </div>
+  </div>
+</div> 

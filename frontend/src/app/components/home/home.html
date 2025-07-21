@@ -1,0 +1,94 @@
+<div class="home-page">
+  <div class="content">
+    <h1>Welcome to OldPhoneDeals</h1>
+    <p class="welcome-text">Your trusted source for quality used phones</p>
+  </div>
+  <div class="search-bar">
+    <input 
+      type="text" 
+      placeholder="Search for a phone..." 
+      [(ngModel)]="searchQuery" 
+    >
+    <button (click)="onSearch()">Search</button>
+  </div>
+  <div class="main-content">
+    <div *ngIf="loading">Loading products...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <h1>Sold Out Soon</h1>
+    <table class="sos-table" *ngIf="!loading && !error">
+      <tbody>
+        <tr *ngFor="let product of lowStockProducts">
+          <td>
+            <img 
+              [src]="'/assets/' + product.brand + '.jpeg'"  
+              alt="{{ product.brand }}" 
+              width="100"
+            >
+          </td>
+          <td>
+            <p><strong>{{ product.title }}</strong></p>
+            <p>Brand: {{ product.brand }}</p>
+            <p>Price: ${{ product.price }}</p>
+            <p>Stock: {{ product.stock }}</p>
+            <button class="btn btn-add-to-cart" (click)="openQuantityDialog(product)" [disabled]="product.stock <= 0">
+              {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h1>Best Sellers</h1>
+    <table class="best-table" *ngIf="!loading && !error">
+      <tbody>
+        <tr *ngFor="let product of bestRatedProducts">
+          <td>
+            <img 
+              [src]="'/assets/' + product.brand + '.jpeg'"  
+              alt="{{ product.brand }}" 
+              width="100"
+            >
+          </td>
+          <td>
+            <p><strong>{{ product.title }}</strong></p>
+            <p>Brand: {{ product.brand }}</p>
+            <p>Price: ${{ product.price }}</p>
+            <p>Reviews:</p>
+            <ul>
+              <li *ngFor="let review of product.reviews">
+                <p><strong>Rating:</strong> {{ review.rating }}</p>
+                <p><strong>Comment:</strong> {{ review.comment }}</p>
+              </li>
+            </ul>
+            <button (click)="openQuantityDialog(product)" [disabled]="product.stock <= 0">
+              {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Quantity Input Dialog -->
+<div class="quantity-dialog" *ngIf="showQuantityDialog">
+  <div class="dialog-content">
+    <h3>Select Quantity</h3>
+    <p>Product: {{ selectedProduct?.title }}</p>
+    <p>Stock: {{ selectedProduct?.stock }}</p>
+    <div class="quantity-input">
+      <input 
+        type="number" 
+        [(ngModel)]="quantity" 
+        min="1" 
+        [max]="selectedProduct?.stock"
+        (input)="validateQuantity()"
+      >
+      <div class="error-message" *ngIf="quantityError">{{ quantityError }}</div>
+    </div>
+    <div class="dialog-buttons">
+      <button (click)="addToCart()">Confirm</button>
+      <button (click)="closeQuantityDialog()">Cancel</button>
+    </div>
+  </div>
+</div>

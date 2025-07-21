@@ -1,0 +1,15 @@
+<header class="header">
+  <div class="header-content">
+    <button class="btn btn-link" routerLink="/home">OldPhoneDeals</button>
+    <div class="header-buttons">
+      <ng-container *ngIf="!(isAuthenticated$ | async); else loggedIn">
+        <button class="btn btn-primary" routerLink="/login">Login</button>
+        <button class="btn btn-secondary" routerLink="/signup">Sign Up</button>
+      </ng-container>
+      <ng-template #loggedIn>
+        <button class="btn btn-primary" (click)="logout()">Logout</button>
+      </ng-template>
+      <button class="checkout-btn" routerLink="/checkout">Checkout</button>
+    </div>
+  </div>
+</header> 

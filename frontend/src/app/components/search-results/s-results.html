@@ -1,0 +1,35 @@
+<div class="search-results">
+  <h1>Search Results for "{{ searchQuery }}"</h1>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading">Loading search results...</div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- Search Results -->
+  <table *ngIf="!loading && !error && searchResults.length > 0" class="results-table">
+    <tbody>
+      <tr *ngFor="let product of searchResults">
+        <td>
+          <img 
+            [src]="'/assets/' + product.brand + '.jpeg'"  
+            alt="{{ product.brand }}" 
+            width="100"
+          >
+        </td>
+        <td>
+          <p><strong>{{ product.title }}</strong></p>
+          <p>Brand: {{ product.brand }}</p>
+          <p>Price: ${{ product.price }}</p>
+          <p>Stock: {{ product.stock }}</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Results Found -->
+  <div *ngIf="!loading && !error && searchResults.length === 0" class="no-results">
+    <p>No products found for "{{ searchQuery }}".</p>
+  </div>
+</div>
