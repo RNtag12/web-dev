@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
+// ProfileComponent allows users to view and update their profile and change their password
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -348,20 +349,20 @@ export class ProfileComponent implements OnInit {
   get currentPassword() {
     return this.passwordForm.get('currentPassword');
   }
-
   get newPassword() {
     return this.passwordForm.get('newPassword');
   }
-
   get confirmPassword() {
     return this.passwordForm.get('confirmPassword');
   }
 
+  // Injects services for authentication, navigation, and form building
   constructor(
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder
   ) {
+    // Initialize password and edit forms
     this.passwordForm = this.fb.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
@@ -379,10 +380,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  // Lifecycle hook: loads the user profile on component initialization
   ngOnInit(): void {
     this.loadUserProfile();
   }
 
+  // Loads the current user's profile from the backend
   private loadUserProfile(): void {
     this.loading = true;
     this.error = null;
@@ -404,6 +407,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  // Custom validator to check if new password and confirmPassword match
   passwordMatchValidator(form: FormGroup) {
     const newPassword = form.get('newPassword');
     const confirmPassword = form.get('confirmPassword');
@@ -415,17 +419,20 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Shows the change password form
   showChangePasswordForm(): void {
     this.showChangePassword = true;
     this.error = null;
   }
 
+  // Cancels the change password process
   cancelChangePassword(): void {
     this.showChangePassword = false;
     this.passwordForm.reset();
     this.error = null;
   }
 
+  // Handles password change form submission
   onSubmit(): void {
     if (this.passwordForm.valid) {
       this.loading = true;
@@ -447,16 +454,14 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Starts editing a profile field
   startEditing(field: string): void {
     this.editingField = field;
     this.error = null;
-    
     // Reset form and set validators only for the field being edited
     this.editForm.reset();
-    
     // Set validators for current password
     this.editForm.get('currentPassword')?.setValidators([Validators.required]);
-    
     // Set validators for the field being edited
     const fieldControl = this.editForm.get(field);
     if (field === 'email') {
@@ -464,27 +469,26 @@ export class ProfileComponent implements OnInit {
     } else {
       fieldControl?.setValidators([Validators.required]);
     }
-    
     // Update validators
     this.editForm.get('currentPassword')?.updateValueAndValidity();
     fieldControl?.updateValueAndValidity();
-    
     // Set initial values
     this.editForm.patchValue({
       [field]: this.user?.[field as keyof User] || '',
       currentPassword: ''
     });
-
     // Mark the field as touched to trigger validation
     fieldControl?.markAsTouched();
   }
 
+  // Cancels editing a profile field
   cancelEdit(): void {
     this.editingField = null;
     this.editForm.reset();
     this.error = null;
   }
 
+  // Handles profile update form submission
   onEditSubmit(): void {
     if (this.editForm.valid && this.editingField) {
       this.loading = true;

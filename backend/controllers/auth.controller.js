@@ -1,15 +1,16 @@
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-
 const JWT_SECRET = process.env.JWT_SECRET;
+const validator = require('validator');
+
 
 const signup = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
+    const normalizedEmail = validator.normalizeEmail(email);
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
@@ -18,7 +19,7 @@ const signup = async (req, res) => {
     const user = new User({
       firstName,
       lastName,
-      email,
+      email: normalizedEmail,
       password
     });
 
@@ -28,8 +29,15 @@ const signup = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id },
       JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: '1h' }
     );
+    res.cookie('token', token,
+      { httpOnly: true, 
+       secure: true,
+       sameSite: 'strict',
+        maxAge: 3600000 
+       
+       });
 
     res.status(201).json({
       _id: user._id,
@@ -47,11 +55,12 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log('Login attempt for email:', email);
+    const normalizedEmail = validator.normalizeEmail(email);
+    console.log('Login attempt for email:', normalizedEmail);
     console.log('Received password:', password);
 
     // Find user
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       console.log('User not found');
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -78,8 +87,16 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id },
       JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: '1h' },
+  
     );
+    res.cookie('token', token,
+       { httpOnly: true, 
+        secure: true,
+        sameSite: 'strict',
+         maxAge: 3600000 
+        
+        }); //added cookie security
 
     res.json({
       _id: user._id,
@@ -97,10 +114,11 @@ const login = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log('Verifying email:', email);
+    const normalizedEmail = validator.normalizeEmail(email);
+    console.log('Verifying email:', normalizedEmail);
 
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       console.log('Email not found');
       return res.status(404).json({ message: 'Email not found' });
@@ -120,7 +138,7 @@ const resetPassword = async (req, res) => {
     console.log('Password reset requested for email:', email);
 
     // Find user
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: validator.normalizeEmail(email) });
     if (!user) {
       console.log('User not found');
       return res.status(404).json({ message: 'User not found' });
@@ -185,7 +203,7 @@ const updateProfile = async (req, res) => {
   try {
     const { firstName, lastName, email, currentPassword } = req.body;
     const userId = req.user.id;
-
+    const normalizedEmail = validator.normalizeEmail(email);
     // Find user
     const user = await User.findById(userId);
     if (!user) {
@@ -200,7 +218,7 @@ const updateProfile = async (req, res) => {
 
     // Check if email is already taken by another user
     if (email && email !== user.email) {
-      const existingUser = await User.findOne({ email });
+      const existingUser = await User.findOne({ email: normalizedEmail });
       if (existingUser) {
         return res.status(400).json({ message: 'Email is already taken' });
       }
@@ -209,7 +227,7 @@ const updateProfile = async (req, res) => {
     // Update user data
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
-    if (email) user.email = email;
+    if (email) user.email = normalizedEmail;
 
     await user.save();
 

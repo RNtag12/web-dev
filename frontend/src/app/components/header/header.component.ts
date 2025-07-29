@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
+// HeaderComponent displays the navigation bar and handles user session actions
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -104,16 +105,19 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   `]
 })
 export class HeaderComponent {
+  // Injects services for authentication, dialogs, and navigation
   constructor(
     private authService: AuthService,
     private dialog: MatDialog,
     private router: Router
   ) {}
 
+  // Checks if the user is logged in
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
+  // Navigates to checkout if logged in, otherwise to login
   goToCheckout() {
     if (this.isLoggedIn()) {
       this.router.navigate(['/checkout']);
@@ -122,6 +126,7 @@ export class HeaderComponent {
     }
   }
 
+  // Opens a confirmation dialog and logs out the user if confirmed
   logout(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '300px',

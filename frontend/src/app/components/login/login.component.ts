@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 
+// LoginComponent handles user login functionality and form validation
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string = '/home';
   hasPendingCart: boolean = false;
 
+  // Injects services for form building, authentication, navigation, and cart
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -26,18 +28,21 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private cartService: CartService
   ) {
+    // Initialize the login form with validators
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
+  // Lifecycle hook: retrieves return URL and pending cart status
   ngOnInit() {
     // Get return url from route parameters or default to '/home'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
     this.hasPendingCart = this.route.snapshot.queryParams['pendingCart'] === 'true';
   }
 
+  // Handles form submission and login logic
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.loading = true;
@@ -62,6 +67,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  // Getter for email form control
   get email() { return this.loginForm.get('email'); }
+  // Getter for password form control
   get password() { return this.loginForm.get('password'); }
 } 

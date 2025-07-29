@@ -5,6 +5,7 @@ import { ProductService } from '../../services/product.service';
 import { FormsModule } from '@angular/forms';
 import { CartService, CartItem } from '../../services/cart.service';
 
+// HomeComponent displays the main landing page, product lists, and handles search and cart actions
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
@@ -14,6 +15,7 @@ import { CartService, CartItem } from '../../services/cart.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
+  // Arrays to hold product data for different sections
   products: any[] = [];
   lowStockProducts: any[] = [];
   bestRatedProducts: any[] = [];
@@ -25,16 +27,19 @@ export class HomeComponent {
   quantity: number = 1;
   quantityError: string | null = null;
 
+  // Injects services for product data, navigation, and cart management
   constructor(
     private productService: ProductService,
     private router: Router,
     private cartService: CartService
   ) {}
 
+  // Lifecycle hook: called after component initialization
   ngOnInit(): void {
     this.loadProducts();
   }
 
+  // Loads products and populates low stock and best rated lists
   private loadProducts(): void {
     this.loading = true;
     this.error = null;
@@ -67,6 +72,7 @@ export class HomeComponent {
     });
   }
 
+  // Handles search action and navigates to search results page
   onSearch(): void {
     if (this.searchQuery.trim()) {
       // Navigate to the s-results page with the search query as a parameter
@@ -74,6 +80,7 @@ export class HomeComponent {
     }
   }
 
+  // Opens the quantity dialog for a selected product
   openQuantityDialog(product: any): void {
     this.selectedProduct = product;
     this.quantity = 1;
@@ -81,6 +88,7 @@ export class HomeComponent {
     this.showQuantityDialog = true;
   }
 
+  // Closes the quantity dialog and resets related state
   closeQuantityDialog(): void {
     this.showQuantityDialog = false;
     this.selectedProduct = null;
@@ -88,6 +96,7 @@ export class HomeComponent {
     this.quantityError = null;
   }
 
+  // Validates the quantity input for adding to cart
   validateQuantity(): boolean {
     if (!this.quantity || isNaN(this.quantity)) {
       this.quantityError = 'Please enter a valid quantity';
@@ -105,6 +114,7 @@ export class HomeComponent {
     return true;
   }
 
+  // Adds the selected product and quantity to the cart
   addToCart(): void {
     if (!this.validateQuantity()) {
       return;
@@ -122,7 +132,7 @@ export class HomeComponent {
     this.closeQuantityDialog();
   }
 
-  // Add trackBy functions for ngFor
+  // trackBy functions for ngFor performance optimization
   trackByProductId(index: number, product: any): any {
     return product.id || product._id || index;
   }

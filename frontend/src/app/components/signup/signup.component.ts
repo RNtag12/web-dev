@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
+// SignupComponent handles user registration and form validation
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -16,11 +17,13 @@ export class SignupComponent {
   error: string = '';
   loading: boolean = false;
 
+  // Injects services for form building, authentication, and navigation
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
+    // Initialize the signup form with validators
     this.signupForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
@@ -32,6 +35,7 @@ export class SignupComponent {
     });
   }
 
+  // Custom validator to check if password and confirmPassword match
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
@@ -43,6 +47,7 @@ export class SignupComponent {
     }
   }
 
+  // Handles form submission and signup logic
   onSubmit(): void {
     if (this.signupForm.valid) {
       this.loading = true;
@@ -67,6 +72,7 @@ export class SignupComponent {
     }
   }
 
+  // Getters for form controls
   get firstName() { return this.signupForm.get('firstName'); }
   get lastName() { return this.signupForm.get('lastName'); }
   get email() { return this.signupForm.get('email'); }

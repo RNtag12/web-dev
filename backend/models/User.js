@@ -33,7 +33,12 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Hash password before saving
+// Add indexes for better performance
+userSchema.index({ email: 1 }, { unique: true }); // Ensures fast lookups and uniqueness for email
+userSchema.index({ createdAt: -1 }); // Allows efficient sorting/filtering by creation date
+
+// Pre-save hook to hash password before saving
+// Hash password before saving using Bycrypt
 userSchema.pre('save', async function(next) {
     console.log('Pre-save hook triggered');
     console.log('Is password modified?', this.isModified('password'));
@@ -55,7 +60,7 @@ userSchema.pre('save', async function(next) {
     }
 });
 
-// Method to compare password
+// Method to compare password using Bycrypt
 userSchema.methods.comparePassword = async function(candidatePassword) {
     console.log('Comparing passwords in User model...');
     console.log('Candidate password:', candidatePassword);

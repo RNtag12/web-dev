@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// DashboardComponent displays a success message after login
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -20,12 +21,10 @@ import { CommonModule } from '@angular/common';
       min-height: calc(100vh - 64px);
       background-color: #f5f5f5;
     }
-
     .success-message {
       text-align: center;
       padding: 2rem;
     }
-
     h1 {
       color: #28a745;
       font-size: 2.5rem;
