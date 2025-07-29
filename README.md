@@ -2,9 +2,9 @@
 # Full Stack Website (MEAN stack)
 
 ### Project Description
-This project is a full stack web application built using the MEAN stack (MongoDB, Express, Angular, and Node.js). It features a modern web interface for managing users and products, with secure authentication and robust backend APIs. The backend, powered by Node.js and Express, connects to a MongoDB database to store user and product information, including user registration, login, and product listings with details such as title, brand, image, stock, seller, price, and reviews. The frontend, developed with Angular, provides a responsive and interactive user experience. This application demonstrates best practices in full stack development, including RESTful API design, user authentication with password hashing, and seamless integration between the frontend and backend. The project serves as a practical example of building scalable and maintainable web applications using popular open-source technologies.
+This project is a full stack web application built using the MEAN stack (MongoDB, Express, Angular, and Node.js). It features a modern web interface for managing users and products, with secure authentication and robust backend APIs. The backend, powered by Node.js and Express, connects to a MongoDB database to store user and product information, including user registration, login, and product listings with details such as title, brand, image, stock, seller, price, and reviews. The frontend, developed with Angular, provides a responsive and interactive user experience with optimized performance using various techniques such as lazy loading. This application demonstrates best practices in full stack development, including RESTful API design, user authentication with password hashing, and seamless integration between the frontend and backend. The project serves as a practical example of building scalable and maintainable web applications using popular open-source technologies.
 
-### Security Features
+###  Added Security Features
 #### Password Hashing:
 - User passwords are securely hashed using bcrypt before being stored in the database, protecting user credentials even if the database is compromised.
 #### Input Validation:
@@ -18,6 +18,19 @@ This project is a full stack web application built using the MEAN stack (MongoDB
 #### Error Handling:
 - Centralized error handling prevents sensitive information from being exposed in API responses.
 
+###  Added performance Features
+#### Lazy loading implementation:
+- Feature modules (login, signup, profile, etc.) are loaded only when needed.
+#### Mongoose indexing for faster lookups:
+- Implemented Mongoose indexing for faster lookups for all the schema models created.
+#### Standalone Components (most components):
+- Enables independent loading and better tree-shaking.
+#### OnPush Change Detection (home.component.ts):
+- Reduces unnecessary UI checks for better rendering performance.
+#### trackBy in ngFor (home.component.ts):
+- Optimizes list rendering by tracking items efficiently.
+#### Efficient HTTP Requests (product.service.ts, user.service.ts, auth.service.ts):
+- Fetches only required data, minimizing network and UI load.
 
 
 ### Prerequisites
