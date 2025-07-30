@@ -3,7 +3,7 @@ const User = require('../models/User');
 const JWT_SECRET = process.env.JWT_SECRET;
 const validator = require('validator');
 
-
+// handling signup process
 const signup = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -52,6 +52,7 @@ const signup = async (req, res) => {
   }
 };
 
+//Handling Login process
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
