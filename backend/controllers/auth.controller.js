@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const JWT_SECRET = process.env.JWT_SECRET;
-const validator = require('validator');
+const validator = require('validator'); //validator helps in input validation
 
 // handling signup process
 const signup = async (req, res) => {
