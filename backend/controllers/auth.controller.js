@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const JWT_SECRET = process.env.JWT_SECRET;
 const validator = require('validator');
-
+//a token is a piece of data that represents the authorization or authentication status of a user or system.
 // handling signup process
 const signup = async (req, res) => {
   try {
